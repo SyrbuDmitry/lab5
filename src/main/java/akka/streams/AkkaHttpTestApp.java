@@ -19,6 +19,7 @@ public class AkkaHttpTestApp extends AllDirectives {
     public static void main(String[] args) throws Exception{
 
         ActorSystem system = ActorSystem.create("routes");
+        //ActorRef RouteActor = system.actorOf(Props.create(RouterActor.class));
         final Http http = Http.get(system);
         AkkaHttpTestApp instance = new AkkaHttpTestApp();
         final ActorMaterializer materializer = ActorMaterializer.create(system);
