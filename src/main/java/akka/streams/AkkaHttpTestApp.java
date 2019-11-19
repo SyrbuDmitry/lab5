@@ -22,7 +22,7 @@ public class AkkaHttpTestApp extends AllDirectives {
         final Http http = Http.get(system);
         AkkaHttpTestApp instance = new AkkaHttpTestApp();
         final ActorMaterializer materializer = ActorMaterializer.create(system);
-        //final Flow<HttpRequest, HttpResponse, NotUsed> routeFlow = instance.createRoute(RouteActor).flow(system, materializer);
+        final Flow<HttpRequest, HttpResponse, NotUsed> routeFlow = instance.createRoute(RouteActor).flow(system, materializer);
         final CompletionStage<ServerBinding> binding = http.bindAndHandle(
                 routeFlow,
                 ConnectHttp.toHost("localhost", 8085),
