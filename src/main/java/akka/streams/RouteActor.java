@@ -24,7 +24,8 @@ public class RouteActor extends AbstractActor {
     public Flow<HttpRequest,HttpResponse, NotUsed> createRoute(){
         return Flow.of(HttpResponse.class)
                 .mapConcat(this::parseQuery)
-                .mapAsync(5,)
+                .mapAsync(5,this::sendRequests)
+                .
     }
 
     public Pair<String, Integer> parseQuery(HttpRequest req){
@@ -33,5 +34,7 @@ public class RouteActor extends AbstractActor {
         Optional<String> count = qry.get("count");
         return new Pair<>(url.get(),Integer.parseInt(count.get()));
     }
-    public 
+    public HttpResponse sendRequests(){
+
+    }
 }
