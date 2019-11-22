@@ -29,6 +29,6 @@ public class RouteActor extends AbstractActor {
         Query qry = req.getUri().query();
         Optional<String> url = qry.get("testUrl");
         Optional<String> count = qry.get("count");
-        return new Pair<String,String>(url,count);
+        return new Pair<String,String>(url.get(),count.get());
     }
 }
