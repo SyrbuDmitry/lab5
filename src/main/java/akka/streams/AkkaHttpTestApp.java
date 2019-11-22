@@ -36,6 +36,10 @@ public class AkkaHttpTestApp extends AllDirectives {
                 .thenAccept(unbound -> system.terminate());
     }
 
+    public Flow<HttpRequest,HttpResponse,NotUsed> flowResponsse(){
+        return Flow.of(HttpResponse.class).mapConcat(this::req);
+    }
 
-    
+    public
+
 }
