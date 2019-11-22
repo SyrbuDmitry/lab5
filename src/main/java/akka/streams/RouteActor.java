@@ -23,12 +23,13 @@ public class RouteActor extends AbstractActor {
     }
     public Flow<HttpRequest,HttpResponse, NotUsed> createRoute(){
         return Flow.of(HttpResponse.class)
-                .mapConcat(this::parseQuery)
+                .mapConcat(this::parseQuery);
     }
-    public HttpResponse parseQuery(HttpRequest req){
+    
+    public Pair<String, Integer> parseQuery(HttpRequest req){
         Query qry = req.getUri().query();
         Optional<String> url = qry.get("testUrl");
         Optional<String> count = qry.get("count");
-        return new Pair<String,String>(url.get(),count.get());
+        return new Pair<>(url.get(),Integer.parseInt(count.get()));
     }
 }
