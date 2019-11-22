@@ -34,7 +34,7 @@ public class RouteActor extends AbstractActor {
         Optional<String> count = qry.get("count");
         return new Pair<>(url.get(),Integer.parseInt(count.get()));
     }
-    public HttpResponse sendRequests(){
-
+    public HttpResponse sendRequests(Pair<String, Integer> p){
+            
     }
 }
