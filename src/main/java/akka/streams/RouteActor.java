@@ -11,6 +11,9 @@ import akka.http.scaladsl.model.Uri;
 import akka.japi.pf.ReceiveBuilder;
 import akka.routing.RoundRobinPool;
 import akka.stream.javadsl.Flow;
+import javafx.util.Pair;
+
+import java.util.Optional;
 
 public class RouteActor extends AbstractActor {
     @Override
@@ -24,7 +27,8 @@ public class RouteActor extends AbstractActor {
     }
     public HttpResponse parseQuery(HttpRequest req){
         Query qry = req.getUri().query();
-        String url = qry.get("testUrl");
-        String
+        Optional<String> url = qry.get("testUrl");
+        Optional<String> count = qry.get("count");
+        return new Pair<String,String>(url,count);
     }
 }
