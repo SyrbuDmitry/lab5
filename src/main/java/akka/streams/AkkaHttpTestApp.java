@@ -49,7 +49,9 @@ public class AkkaHttpTestApp extends AllDirectives {
                 route(
                         pathSingleSlash(() ->
                                 get(() ->
-                                        parameter()
+                                        parameter("testURL", url->
+                                                parameter("count"->count->)
+                                        )
                                 )
                         )
 
