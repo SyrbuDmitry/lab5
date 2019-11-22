@@ -22,6 +22,6 @@ public class RouteActor extends AbstractActor {
                 .mapConcat(this::parseQuery)
     }
     public HttpResponse parseQuery(HttpRequest req){
-        Uri.Query qry = req.getUri("testURL");
+        Uri.Query qry = req.ge
     }
 }
