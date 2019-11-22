@@ -21,11 +21,11 @@ public class RouteActor extends AbstractActor {
         return ReceiveBuilder.create()
                 .build();
     }
-    public Flow<HttpRequest,HttpResponse, NotUsed> createRoute(){
+    public Flow<HttpRequest, Pair<String, Integer>, NotUsed> createRoute(){
         return Flow.of(HttpResponse.class)
                 .mapConcat(this::parseQuery);
     }
-    
+
     public Pair<String, Integer> parseQuery(HttpRequest req){
         Query qry = req.getUri().query();
         Optional<String> url = qry.get("testUrl");
