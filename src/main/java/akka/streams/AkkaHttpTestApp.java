@@ -51,7 +51,7 @@ public class AkkaHttpTestApp extends AllDirectives {
                                         get(() ->
                                                         parameter("testURL", url ->
                                                                         parameter("count", count -> {
-//                                                    Future<Object> result = Patterns.ask(RouteActor, new GetResultMessage(Integer.parseInt(id)), 5000);
+                                                    Future<Object> result = Patterns.ask(RouteActor, new Request(url,count), 5000);
                                                                             return complete("SUCCESS");
 
                                                                         })
