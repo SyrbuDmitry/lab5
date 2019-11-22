@@ -20,14 +20,14 @@ import scala.concurrent.Future;
 import java.util.concurrent.CompletionStage;
 
 public class AkkaHttpTestApp extends AllDirectives {
-    public static void main(String[] args) throws Exception{
+    public static void main(String[] args) throws Exception {
 
         ActorSystem system = ActorSystem.create("routes");
-        //ActorRef RouteActor = system.actorOf(Props.create(RouterActor.class));
+        ActorRef routeActor = system.actorOf(Props.create(RouteActor.class));
         final Http http = Http.get(system);
         AkkaHttpTestApp instance = new AkkaHttpTestApp();
         final ActorMaterializer materializer = ActorMaterializer.create(system);
-        final Flow<HttpRequest, HttpResponse, NotUsed> routeFlow = instance.createRoute(RouteActor).flow(system, materializer);
+        final Flow<HttpRequest, HttpResponse, NotUsed> routeFlow = instance.createRoute(routeActor).flow(system, materializer);
         final CompletionStage<ServerBinding> binding = http.bindAndHandle(
                 routeFlow,
                 ConnectHttp.toHost("localhost", 8085),
@@ -40,19 +40,23 @@ public class AkkaHttpTestApp extends AllDirectives {
                 .thenAccept(unbound -> system.terminate());
     }
 
-    public Flow<HttpRequest,HttpResponse,NotUsed> flowResponsse(){
-        return Flow.of(HttpResponse.class).mapConcat(this::req);
-    }
+//    public Flow<HttpRequest, HttpResponse, NotUsed> flowResponsse() {
+//        return Flow.of(HttpResponse.class).mapConcat(this::req);
+//    }
 
     private Route createRoute(ActorRef RouteActor) {
         return
                 route(
                         pathSingleSlash(() ->
-                                get(() ->
-                                        parameter("testURL", url->
-                                                parameter("count"->count->)
+                                        get(() ->
+                                                        parameter("testURL", url ->
+                                                                        parameter("count", count -> {
+//                                                    Future<Object> result = Patterns.ask(RouteActor, new GetResultMessage(Integer.parseInt(id)), 5000);
+                                                                            return complete("SUCCESS");
+
+                                                                        })
+                                                        )
                                         )
-                                )
                         )
 
 //                        pathSingleSlash(() ->
