@@ -6,6 +6,7 @@ import akka.actor.ActorRef;
 import akka.actor.Props;
 import akka.http.javadsl.model.HttpRequest;
 import akka.http.javadsl.model.HttpResponse;
+import akka.http.javadsl.model.Query;
 import akka.http.scaladsl.model.Uri;
 import akka.japi.pf.ReceiveBuilder;
 import akka.routing.RoundRobinPool;
@@ -22,6 +23,6 @@ public class RouteActor extends AbstractActor {
                 .mapConcat(this::parseQuery)
     }
     public HttpResponse parseQuery(HttpRequest req){
-        Uri.Query qry = req.ge
+        Query qry = req.getUri().query();
     }
 }
