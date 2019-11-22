@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="1ba4aaa1-6ab5-4aae-94e2-0ac7aceb0322" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/src/main/java/akka/streams/AkkaHttpTestApp.java" afterPath="$PROJECT_DIR$/src/main/java/akka/streams/AkkaHttpTestApp.java" />
-    </list>
+    <list default="true" id="1ba4aaa1-6ab5-4aae-94e2-0ac7aceb0322" name="Default" comment="" />
     <ignored path="$PROJECT_DIR$/target/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -67,7 +65,7 @@
     <sorting>DEFINITION_ORDER</sorting>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="753" />
+    <option name="x" value="535" />
     <option name="y" value="23" />
     <option name="width" value="1440" />
     <option name="height" value="877" />
@@ -272,15 +270,15 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1574160406985</updated>
-      <workItem from="1574160410786" duration="2618000" />
+      <workItem from="1574160410786" duration="2712000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="2618000" />
+    <option name="totallyTimeSpent" value="2712000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="753" y="23" width="1440" height="877" extended-state="0" />
+    <frame x="535" y="23" width="1440" height="877" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
