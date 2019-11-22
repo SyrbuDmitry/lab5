@@ -24,5 +24,7 @@ public class RouteActor extends AbstractActor {
     }
     public HttpResponse parseQuery(HttpRequest req){
         Query qry = req.getUri().query();
+        String url = qry.get("testUrl");
+        String
     }
 }
