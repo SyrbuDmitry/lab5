@@ -24,7 +24,7 @@ public class RouteActor extends AbstractActor {
     public Flow<HttpRequest,HttpResponse, NotUsed> createRoute(){
         return Flow.of(HttpRequest.class)
                 .mapConcat(this::parseQuery)
-                .mapAsync(5,this::sendRequests)
+                .mapAsync(5,this::sendRequest)
                 .
     }
 
@@ -35,7 +35,7 @@ public class RouteActor extends AbstractActor {
         return new Pair<>(url.get(),Integer.parseInt(count.get()));
     }
 
-    public HttpResponse sendRequests(Pair<String, Integer> p){
+    public HttpResponse sendRequest(Pair<String, Integer> p){
 
     }
 }
