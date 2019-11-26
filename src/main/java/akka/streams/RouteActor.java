@@ -22,7 +22,7 @@ public class RouteActor extends AbstractActor {
                 .build();
     }
     public Flow<HttpRequest,HttpResponse, NotUsed> createRoute(){
-        return Flow.of(HttpResponse.class)
+        return Flow.of(HttpRequest.class)
                 .mapConcat(this::parseQuery)
                 .mapAsync(5,this::sendRequests)
                 .
