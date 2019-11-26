@@ -35,7 +35,7 @@ public class RouteActor extends AbstractActor {
         return new Pair<>(url.get(),Integer.parseInt(count.get()));
     }
 
-    public HttpResponse sendRequest(Pair<String, Integer> p){
-        
+    public HttpResponse sendRequest(Pair<String, Integer> request){
+
     }
 }
