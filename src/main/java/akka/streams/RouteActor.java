@@ -28,14 +28,14 @@ public class RouteActor extends AbstractActor {
 
     }
 
-    public Pair<String, Integer> parseQuery(HttpRequest req){
+    public Request parseQuery(HttpRequest req){
         Query qry = req.getUri().query();
         Optional<String> url = qry.get("testUrl");
         Optional<String> count = qry.get("count");
-        return new Pair<>(url.get(),Integer.parseInt(count.get()));
+        return new Request(url.get(),count.get());
     }
 
-    public HttpResponse sendRequest(Pair<String, Integer> request){
+    public HttpResponse sendRequest(Request r){
 
     }
 }
