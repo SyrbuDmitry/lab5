@@ -27,8 +27,8 @@ public class RouteActor {
     public Flow<HttpRequest,HttpResponse, NotUsed> createRoute(){
         return Flow.of(HttpRequest.class)
                 .map(this::parseQuery)
-                .mapAsync(this::sendRequest)
-
+                .mapAsync(5,this::sendRequest)
+                .map(this::convertIntoResponse);
     }
 
     public Request parseQuery(HttpRequest req){
@@ -50,5 +50,7 @@ public class RouteActor {
     public CompletionStage<Long> getTime(Request r){
         Instant startTime = Instant.now();
     }
+    public HttpResponse convertIntoResponse(Long r){
 
+    }
 }
