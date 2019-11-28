@@ -41,6 +41,7 @@ public class RouteActor {
     }
 
     private Request parseQuery(HttpRequest req){
+        System.out.println("PARSING STAGE");
         Query qry = req.getUri().query();
         Optional<String> url = qry.get("testUrl");
         Optional<String> count = qry.get("count");
@@ -67,7 +68,7 @@ public class RouteActor {
                 .thenCompose(w -> CompletableFuture.completedFuture(
                         Duration.between(startTime,Instant.now()).getSeconds()/r.getCount()
                 ));
-        System.out.println("COUNT   "+r.getCount());
+
         return  whenResponse;
     }
     private HttpResponse convertIntoResponse(Long r){
