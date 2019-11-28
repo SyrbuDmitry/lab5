@@ -45,10 +45,9 @@ public class RouteActor {
         Query qry = req.getUri().query();
         System.out.println("GOT QUERY");
         Optional<String> url = qry.get("testUrl");
-        System.out.println("GOT URL");
+        System.out.println(url.get());
         Optional<String> count = qry.get("count");
-        System.out.println("GOT COUNT");
-        return new Request(url.get(),count.get());
+        return new Request(url.get(),"5");
     }
 
     private CompletionStage<Long> sendRequest(Request r){
@@ -58,12 +57,15 @@ public class RouteActor {
                 .mapAsync(5,this::getTime)
                 .toMat(Sink.fold(0L, (agg, next) -> agg + next),  Keep.right());
         return Source.from(Collections.singletonList(r))
-                .toMat(testSink, Keep.right()).run(materializer);
+                .toMat(testSink, Keep.right())
+                .run(materializer)
+                .thenApply(res->res/r.getCount());
     }
 
 
     private CompletionStage<Long> getTime(Request r){
         long start = System.currentTimeMillis();
+
         AsyncHttpClient client = Dsl.asyncHttpClient();
         CompletionStage<Long> whenResponse = client.prepareGet(r.getUrl()).execute()
                 .toCompletableFuture()
@@ -73,6 +75,7 @@ public class RouteActor {
         return  whenResponse;
     }
     private HttpResponse convertIntoResponse(Long r){
+        System.out.println(r);
         HttpResponse res = HttpResponse
                 .create()
                 .withEntity(ContentTypes.APPLICATION_JSON, ByteString.fromString(String.valueOf(r)));
