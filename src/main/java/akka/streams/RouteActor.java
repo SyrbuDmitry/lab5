@@ -61,7 +61,7 @@ public class RouteActor {
 
     private CompletionStage<Long> getTime(Request r){
         Instant startTime = Instant.now();
-
+        AsyncHttpClient client = Dsl.asyncHttpClient();
         CompletionStage<Long> whenResponse = client.prepareGet(r.getUrl()).execute()
                 .toCompletableFuture()
                 .thenCompose(w -> CompletableFuture.completedFuture(
