@@ -16,6 +16,7 @@ import akka.stream.javadsl.Keep;
 import akka.stream.javadsl.Sink;
 import akka.stream.javadsl.Source;
 import javafx.util.Pair;
+import org.asynchttpclient.Dsl;
 import org.asynchttpclient.Response;
 import org.asynchttpclient.AsyncHttpClient;
 import java.time.Instant;
@@ -51,7 +52,8 @@ public class RouteActor {
     }
     private CompletionStage<Long> getTime(Request r){
         Instant startTime = Instant.now();
-        Future<Response> whenResponse = AsyncHttpClient.
+        AsyncHttpClient client = Dsl.asyncHttpClient();
+        Future<Response> whenResponse = client.prepareGet(r.getUrl()).execute();
 
 
 
