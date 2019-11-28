@@ -29,7 +29,9 @@ import java.util.concurrent.Future;
 
 public class RouteActor {
     private ActorMaterializer materializer;
-
+    RouteActor(ActorMaterializer materializer){
+        this.materializer = materializer;
+    }
     public Flow<HttpRequest,HttpResponse, NotUsed> createRoute(){
         return Flow.of(HttpRequest.class)
                 .map(this::parseQuery)
