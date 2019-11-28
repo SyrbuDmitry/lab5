@@ -29,8 +29,12 @@ import java.util.concurrent.Future;
 
 public class RouteActor {
     private ActorMaterializer materializer;
-    RouteActor(ActorMaterializer materializer){
+    private AsyncHttpClient client;
+
+
+    RouteActor(AsyncHttpClient client,ActorMaterializer materializer){
         this.materializer = materializer;
+        this.client = client;
     }
     public Flow<HttpRequest,HttpResponse, NotUsed> createRoute(){
         System.out.println("CREATING ROUTE STAGE");
@@ -61,7 +65,7 @@ public class RouteActor {
 
     private CompletionStage<Long> getTime(Request r){
         Instant startTime = Instant.now();
-        AsyncHttpClient client = Dsl.asyncHttpClient();
+
         CompletionStage<Long> whenResponse = client.prepareGet(r.getUrl()).execute()
                 .toCompletableFuture()
                 .thenCompose(w -> CompletableFuture.completedFuture(

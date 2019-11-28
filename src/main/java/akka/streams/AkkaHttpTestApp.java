@@ -15,20 +15,24 @@ import akka.http.javadsl.server.Route;
 import akka.pattern.Patterns;
 import akka.stream.ActorMaterializer;
 import akka.stream.javadsl.Flow;
+import org.asynchttpclient.AsyncHttpClient;
+import org.asynchttpclient.Dsl;
 import scala.concurrent.Future;
 
 import java.util.concurrent.CompletionStage;
+
+import static org.asynchttpclient.Dsl.asyncHttpClient;
 
 public class AkkaHttpTestApp extends AllDirectives {
     public static void main(String[] args) throws Exception {
 
         ActorSystem system = ActorSystem.create("routes");
-
+        AsyncHttpClient client = asyncHttpClient();
         final Http http = Http.get(system);
 
         final ActorMaterializer materializer = ActorMaterializer.create(system);
 
-        RouteActor routeActor = new RouteActor(materializer);
+        RouteActor routeActor = new RouteActor(client,materializer);
         final Flow<HttpRequest, HttpResponse, NotUsed> routeFlow = routeActor.createRoute();
         final CompletionStage<ServerBinding> binding = http.bindAndHandle(
                 routeFlow,
