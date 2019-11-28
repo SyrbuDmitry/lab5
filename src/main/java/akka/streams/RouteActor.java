@@ -48,27 +48,24 @@ public class RouteActor {
         Sink<Request,CompletionStage<Long>> testSink =
                 Flow.<Request>create()
                 .mapConcat(t-> Collections.nCopies(t.getCount(),t))
-                .mapAsync(this::getTime)
+                .mapAsync(5,this::getTime)
                 .toMat(Sink.fold(0L, (agg, next) -> agg + next),  Keep.right());
         return Source.from(Collections.singletonList(r))
                 .toMat(testSink, Keep.right()).run(materializer);
     }
+
+
     private CompletionStage<Long> getTime(Request r){
         Instant startTime = Instant.now();
         AsyncHttpClient client = Dsl.asyncHttpClient();
-        Future<Long> whenResponse = client.prepareGet(r.getUrl()).execute()
+        CompletionStage<Long> whenResponse = client.prepareGet(r.getUrl()).execute()
                 .toCompletableFuture()
-                .thenCompose(w -> );
-
-
-
-
-
-
-
-
+                .thenCompose(w -> CompletableFuture.completedFuture(
+                        Duration.between(startTime,Instant.now()).getSeconds()
+                ));
+        return  whenResponse;
     }
     public HttpResponse convertIntoResponse(Long r){
-
+        HttpResponse res = HttpResponse.create()
     }
 }
