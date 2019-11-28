@@ -22,6 +22,7 @@ import java.time.Instant;
 import java.util.Collections;
 import java.util.Optional;
 import java.util.concurrent.CompletionStage;
+import java.util.concurrent.Future;
 
 public class RouteActor {
     private ActorMaterializer materializer;
@@ -50,7 +51,7 @@ public class RouteActor {
     }
     public CompletionStage<Long> getTime(Request r){
         Instant startTime = Instant.now();
-
+        Future<Response> whenResponse = ass.prepareGet("http://www.example.com/").execute();
     }
     public HttpResponse convertIntoResponse(Long r){
 
