@@ -65,7 +65,7 @@ public class RouteActor {
         CompletionStage<Long> whenResponse = client.prepareGet(r.getUrl()).execute()
                 .toCompletableFuture()
                 .thenCompose(w -> CompletableFuture.completedFuture(
-                        Duration.between(startTime,Instant.now()).getSeconds()
+                        Duration.between(startTime,Instant.now()).getSeconds()/r.getCount()
                 ));
         return  whenResponse;
     }
