@@ -40,32 +40,4 @@ public class AkkaHttpTestApp extends AllDirectives {
                 .thenAccept(unbound -> system.terminate());
     }
 
-//    public Flow<HttpRequest, HttpResponse, NotUsed> flowResponsse() {
-//        return Flow.of(HttpResponse.class).mapConcat(this::req);
-//    }
-
-    private Route createRoute(ActorRef RouteActor) {
-        return
-                route(
-                        pathSingleSlash(() ->
-                                        get(() ->
-                                                        parameter("testURL", url ->
-                                                                        parameter("count", count -> {
-                                                    Future<Object> result = Patterns.ask(RouteActor, new Request(url,count), 5000);
-                                                                            return complete("SUCCESS");
-
-                                                                        })
-                                                        )
-                                        )
-                        )
-
-//                        pathSingleSlash(() ->
-//                                post(() -> entity(Jackson.unmarshaller(PostRequestMessage.class), msg -> {
-//                                    RouteActor.tell(msg,ActorRef.noSender());
-//                                    return complete("Tests started!\n");
-//                                }))
-//                        )
-                );
-    }
-
 }
