@@ -11,6 +11,7 @@ import akka.http.scaladsl.model.Uri;
 import akka.japi.pf.ReceiveBuilder;
 import akka.routing.RoundRobinPool;
 import akka.stream.javadsl.Flow;
+import akka.stream.javadsl.Keep;
 import akka.stream.javadsl.Sink;
 import javafx.util.Pair;
 
@@ -43,7 +44,7 @@ public class RouteActor extends AbstractActor {
                 Flow.of(Request.class)
                 .mapConcat(t-> Collections.nCopies(t.getCount(),t))
                 .mapAsync(this::getTime)
-                .toMat(Sink.fold(0,(agg,next)-> agg + next),s)
+                .toMat(Sink.fold(0,(agg,next)-> agg + next), Keep.right())
     }
 
 
