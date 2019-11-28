@@ -39,13 +39,13 @@ public class RouteActor extends AbstractActor {
         return new Request(url.get(),count.get());
     }
 
-    public HttpResponse sendRequest(Request r){
+    public CompletionStage<Long> sendRequest(Request r){
         Sink<Request,CompletionStage<Long>> testSink =
                 Flow.of(Request.class)
                 .mapConcat(t-> Collections.nCopies(t.getCount(),t))
                 .mapAsync(this::getTime)
                 .toMat(Sink.fold(0L, (agg, next) -> agg + next),  Keep.right());
-        
+        return 
     }
 
 
