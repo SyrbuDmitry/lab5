@@ -4,9 +4,7 @@ import akka.NotUsed;
 import akka.actor.AbstractActor;
 import akka.actor.ActorRef;
 import akka.actor.Props;
-import akka.http.javadsl.model.HttpRequest;
-import akka.http.javadsl.model.HttpResponse;
-import akka.http.javadsl.model.Query;
+import akka.http.javadsl.model.*;
 import akka.http.scaladsl.model.Uri;
 import akka.japi.pf.ReceiveBuilder;
 import akka.routing.RoundRobinPool;
@@ -15,6 +13,7 @@ import akka.stream.javadsl.Flow;
 import akka.stream.javadsl.Keep;
 import akka.stream.javadsl.Sink;
 import akka.stream.javadsl.Source;
+import akka.util.ByteString;
 import javafx.util.Pair;
 import org.asynchttpclient.Dsl;
 import org.asynchttpclient.Response;
@@ -37,14 +36,14 @@ public class RouteActor {
                 .map(this::convertIntoResponse);
     }
 
-    public Request parseQuery(HttpRequest req){
+    private Request parseQuery(HttpRequest req){
         Query qry = req.getUri().query();
         Optional<String> url = qry.get("testUrl");
         Optional<String> count = qry.get("count");
         return new Request(url.get(),count.get());
     }
 
-    public CompletionStage<Long> sendRequest(Request r){
+    private CompletionStage<Long> sendRequest(Request r){
         Sink<Request,CompletionStage<Long>> testSink =
                 Flow.<Request>create()
                 .mapConcat(t-> Collections.nCopies(t.getCount(),t))
@@ -65,7 +64,10 @@ public class RouteActor {
                 ));
         return  whenResponse;
     }
-    public HttpResponse convertIntoResponse(Long r){
-        HttpResponse res = HttpResponse.create()
+    private HttpResponse convertIntoResponse(Long r){
+        HttpResponse res = HttpResponse
+                .create()
+                .withEntity(ContentTypes.APPLICATION_JSON, ByteString.fromString(String.valueOf(r)));
+        return  res;
     }
 }
