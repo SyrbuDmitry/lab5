@@ -51,7 +51,9 @@ public class RouteActor {
     }
     public CompletionStage<Long> getTime(Request r){
         Instant startTime = Instant.now();
-        Future<Response> whenResponse = AsyncHttpClient.
+        Request request = get("http://www.example.com/").build();
+        Future<Response> whenResponse = asyncHttpClient.execute(request);
+
 
     }
     public HttpResponse convertIntoResponse(Long r){
