@@ -49,9 +49,9 @@ public class RouteActor {
         return Source.from(Collections.singletonList(r))
                 .toMat(testSink, Keep.right()).run(materializer);
     }
-    public CompletionStage<Long> getTime(Request r){
+    private CompletionStage<Long> getTime(Request r){
         Instant startTime = Instant.now();
-        Future<Response> whenResponse = AsyncHttpClient.prepareGe("http://www.example.com/").execute();
+        Future<Response> whenResponse = asy
 
 
 
