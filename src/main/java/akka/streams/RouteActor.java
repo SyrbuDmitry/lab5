@@ -67,7 +67,7 @@ public class RouteActor {
                 .thenCompose(w -> CompletableFuture.completedFuture(
                         Duration.between(startTime,Instant.now()).getSeconds()/r.getCount()
                 ));
-        
+        System.out.println(r.getCount());
         return  whenResponse;
     }
     private HttpResponse convertIntoResponse(Long r){
