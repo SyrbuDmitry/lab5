@@ -43,7 +43,7 @@ public class RouteActor extends AbstractActor {
                 Flow.of(Request.class)
                 .mapConcat(t-> Collections.nCopies(t.getCount(),t))
                 .mapAsync(this::getTime)
-                .toMat(Sink.fold)
+                .toMat(Sink.fold(0,(agg,next)-> agg + next),s)
     }
 
 
