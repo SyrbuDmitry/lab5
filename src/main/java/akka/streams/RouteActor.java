@@ -33,6 +33,7 @@ public class RouteActor {
         this.materializer = materializer;
     }
     public Flow<HttpRequest,HttpResponse, NotUsed> createRoute(){
+        System.out.println("CREATING ROUTE STAGE");
         return Flow.of(HttpRequest.class)
                 .map(this::parseQuery)
                 .mapAsync(5,this::sendRequest)
