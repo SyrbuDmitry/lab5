@@ -29,12 +29,8 @@ import java.util.concurrent.Future;
 
 public class RouteActor {
     private ActorMaterializer materializer;
-    private AsyncHttpClient client;
-
-
-    RouteActor(AsyncHttpClient client,ActorMaterializer materializer){
+    RouteActor(ActorMaterializer materializer){
         this.materializer = materializer;
-        this.client = client;
     }
     public Flow<HttpRequest,HttpResponse, NotUsed> createRoute(){
         System.out.println("CREATING ROUTE STAGE");
