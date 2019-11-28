@@ -43,7 +43,7 @@ public class RouteActor {
 
     public CompletionStage<Long> sendRequest(Request r){
         Sink<Request,CompletionStage<Long>> testSink =
-                Flow.of(Request.class)
+                Flow.of(Request.class).create()
                 .mapConcat(t-> Collections.nCopies(t.getCount(),t))
                 .mapAsync(this::getTime)
                 .toMat(Sink.fold(0L, (agg, next) -> agg + next),  Keep.right());
@@ -55,7 +55,7 @@ public class RouteActor {
         AsyncHttpClient client = Dsl.asyncHttpClient();
         Future<Response> whenResponse = client.prepareGet(r.getUrl()).execute().to;
 
-             
+
 
 
 
