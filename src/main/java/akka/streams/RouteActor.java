@@ -39,5 +39,7 @@ public class RouteActor extends AbstractActor {
 
     public HttpResponse sendRequest(Request r){
         Sink<Request,CompletionStage<Long>> testSink =
+                Flow.of(Request.class)
+                .mapConcat()
     }
 }
