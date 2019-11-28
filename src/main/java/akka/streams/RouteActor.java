@@ -46,7 +46,7 @@ public class RouteActor {
         System.out.println("GOT QUERY");
         Optional<String> url = qry.get("testUrl");
         Optional<String> count = qry.get("count");
-        System.out.println(url.get()+" "+ count.get());
+        System.out.println(url.get()+" ||||| "+ count.get());
         return new Request(url.get(),count.get());
     }
 
