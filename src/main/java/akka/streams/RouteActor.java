@@ -42,6 +42,8 @@ public class RouteActor extends AbstractActor {
         Sink<Request,CompletionStage<Long>> testSink =
                 Flow.of(Request.class)
                 .mapConcat(t-> Collections.nCopies(t.getCount(),t))
-                .
+                .mapAsync(this::getTime)
     }
+
+    
 }
