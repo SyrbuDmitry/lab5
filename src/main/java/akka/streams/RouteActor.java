@@ -19,9 +19,12 @@ import javafx.util.Pair;
 import org.asynchttpclient.Dsl;
 import org.asynchttpclient.Response;
 import org.asynchttpclient.AsyncHttpClient;
+
+import java.time.Duration;
 import java.time.Instant;
 import java.util.Collections;
 import java.util.Optional;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionStage;
 import java.util.concurrent.Future;
 
@@ -53,7 +56,9 @@ public class RouteActor {
     private CompletionStage<Long> getTime(Request r){
         Instant startTime = Instant.now();
         AsyncHttpClient client = Dsl.asyncHttpClient();
-        Future<Response> whenResponse = client.prepareGet(r.getUrl()).execute().toCompletableFuture();
+        Future<Long> whenResponse = client.prepareGet(r.getUrl()).execute()
+                .toCompletableFuture()
+                .thenCompose(w -> );
 
 
 
