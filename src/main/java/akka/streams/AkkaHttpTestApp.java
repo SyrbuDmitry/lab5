@@ -25,8 +25,9 @@ public class AkkaHttpTestApp extends AllDirectives {
         ActorSystem system = ActorSystem.create("routes");
 
         final Http http = Http.get(system);
-        AkkaHttpTestApp instance = new AkkaHttpTestApp();
+
         final ActorMaterializer materializer = ActorMaterializer.create(system);
+
         RouteActor routeActor = new RouteActor(materializer);
         final Flow<HttpRequest, HttpResponse, NotUsed> routeFlow = routeActor.createRoute();
         final CompletionStage<ServerBinding> binding = http.bindAndHandle(
