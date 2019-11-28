@@ -23,11 +23,11 @@ public class AkkaHttpTestApp extends AllDirectives {
     public static void main(String[] args) throws Exception {
 
         ActorSystem system = ActorSystem.create("routes");
-        ActorRef routeActor = system.actorOf(Props.create(RouteActor.class));
+        RouteActor routeActor = new RouteActor();
         final Http http = Http.get(system);
         AkkaHttpTestApp instance = new AkkaHttpTestApp();
         final ActorMaterializer materializer = ActorMaterializer.create(system);
-        final Flow<HttpRequest, HttpResponse, NotUsed> routeFlow = instance.createRoute(routeActor).flow(system, materializer);
+        final Flow<HttpRequest, HttpResponse, NotUsed> routeFlow = routeActor.createRoute();
         final CompletionStage<ServerBinding> binding = http.bindAndHandle(
                 routeFlow,
                 ConnectHttp.toHost("localhost", 8085),
