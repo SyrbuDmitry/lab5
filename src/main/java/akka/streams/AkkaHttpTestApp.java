@@ -32,7 +32,7 @@ public class AkkaHttpTestApp extends AllDirectives {
         final Flow<HttpRequest, HttpResponse, NotUsed> routeFlow = routeActor.createRoute();
         final CompletionStage<ServerBinding> binding = http.bindAndHandle(
                 routeFlow,
-                ConnectHttp.toHost("localhost", 8085),
+                ConnectHttp.toHost("localhost", 8080),
                 materializer
         );
         System.out.println("Server online at http://localhost:8085/\nPress RETURN to stop...");
