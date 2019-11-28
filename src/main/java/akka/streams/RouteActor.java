@@ -43,6 +43,7 @@ public class RouteActor {
     private Request parseQuery(HttpRequest req){
         System.out.println("PARSING STAGE");
         Query qry = req.getUri().query();
+        System.out.println("GOT QUERY");
         Optional<String> url = qry.get("testUrl");
         Optional<String> count = qry.get("count");
         System.out.println(url.get()+" "+ count.get());
