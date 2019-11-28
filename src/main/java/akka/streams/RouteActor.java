@@ -53,7 +53,9 @@ public class RouteActor {
     private CompletionStage<Long> getTime(Request r){
         Instant startTime = Instant.now();
         AsyncHttpClient client = Dsl.asyncHttpClient();
-        Future<Response> whenResponse = client.prepareGet(r.getUrl()).execute();
+        Future<Response> whenResponse = client.prepareGet(r.getUrl()).execute().to;
+
+             
 
 
 
