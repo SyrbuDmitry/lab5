@@ -14,6 +14,7 @@ import akka.stream.javadsl.Flow;
 import akka.stream.javadsl.Sink;
 import javafx.util.Pair;
 
+import java.util.Collections;
 import java.util.Optional;
 import java.util.concurrent.CompletionStage;
 
@@ -40,6 +41,7 @@ public class RouteActor extends AbstractActor {
     public HttpResponse sendRequest(Request r){
         Sink<Request,CompletionStage<Long>> testSink =
                 Flow.of(Request.class)
-                .mapConcat()
+                .mapConcat(t-> Collections.nCopies(t.getCount(),t))
+                .
     }
 }
