@@ -11,9 +11,11 @@ import akka.http.scaladsl.model.Uri;
 import akka.japi.pf.ReceiveBuilder;
 import akka.routing.RoundRobinPool;
 import akka.stream.javadsl.Flow;
+import akka.stream.javadsl.Sink;
 import javafx.util.Pair;
 
 import java.util.Optional;
+import java.util.concurrent.CompletionStage;
 
 public class RouteActor extends AbstractActor {
     @Override
@@ -36,6 +38,6 @@ public class RouteActor extends AbstractActor {
     }
 
     public HttpResponse sendRequest(Request r){
-        
+        Sink<Request,CompletionStage<Long>> testSink =
     }
 }
