@@ -10,21 +10,20 @@ import akka.http.javadsl.model.Query;
 import akka.http.scaladsl.model.Uri;
 import akka.japi.pf.ReceiveBuilder;
 import akka.routing.RoundRobinPool;
+import akka.stream.ActorMaterializer;
 import akka.stream.javadsl.Flow;
 import akka.stream.javadsl.Keep;
 import akka.stream.javadsl.Sink;
+import akka.stream.javadsl.Source;
 import javafx.util.Pair;
 
+import java.time.Instant;
 import java.util.Collections;
 import java.util.Optional;
 import java.util.concurrent.CompletionStage;
 
-public class RouteActor extends AbstractActor {
-    @Override
-    public Receive createReceive() {
-        return ReceiveBuilder.create()
-                .build();
-    }
+public class RouteActor {
+    private ActorMaterializer materializer;
     public Flow<HttpRequest,HttpResponse, NotUsed> createRoute(){
         return Flow.of(HttpRequest.class)
                 .map(this::parseQuery)
@@ -45,8 +44,11 @@ public class RouteActor extends AbstractActor {
                 .mapConcat(t-> Collections.nCopies(t.getCount(),t))
                 .mapAsync(this::getTime)
                 .toMat(Sink.fold(0L, (agg, next) -> agg + next),  Keep.right());
-        return 
+        return Source.from(Collections.singletonList(r))
+                .toMat(testSink, Keep.right()).run(materializer);
     }
-
+    public CompletionStage<Long> getTime(Request r){
+        Instant startTime = Instant.now();
+    }
 
 }
