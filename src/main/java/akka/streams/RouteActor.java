@@ -26,14 +26,16 @@ import java.util.concurrent.CompletionStage;
 public class RouteActor {
     private ActorMaterializer materializer;
     private ActorRef cashActor;
+    private int prlsm;
     RouteActor(ActorMaterializer materializer,ActorSystem system){
         this.cashActor = system.actorOf(Props.create(StorageActor.class));
         this.materializer = materializer;
+        this.prlsm = 5;
     }
     public Flow<HttpRequest,HttpResponse, NotUsed> createRoute(){
         return Flow.of(HttpRequest.class)
                 .map(this::parseQuery)
-                .mapAsync(5,this::checkRequest)
+                .mapAsync(prlsm,this::checkRequest)
                 .map(this::convertIntoResponse);
     }
 
@@ -47,16 +49,14 @@ public class RouteActor {
     private CompletionStage<Result> checkRequest(Request r){
         return Patterns.ask(cashActor,r, Duration.ofSeconds(5))
                 .thenApply(res->(Result)res)
-                .thenCompose(m ->{
-                    return m.getResult()!=null ? CompletableFuture.completedFuture(m) : sendRequest(m.getRequest());
-                });
+                .thenCompose(m ->m.getResult()!=null ? CompletableFuture.completedFuture(m) : sendRequest(m.getRequest()));
     }
 
     private CompletionStage<Result> sendRequest(Request r){
         Sink<Request,CompletionStage<Long>> testSink =
                 Flow.<Request>create()
                 .mapConcat(t-> Collections.nCopies(t.getCount(),t))
-                .mapAsync(5,this::getTime)
+                .mapAsync(prlsm,this::getTime)
                 .toMat(Sink.fold(0L, (agg, next) -> agg + next),  Keep.right());
         return Source.from(Collections.singletonList(r))
                 .toMat(testSink, Keep.right())
@@ -68,19 +68,17 @@ public class RouteActor {
     private CompletionStage<Long> getTime(Request r){
         long start = System.currentTimeMillis();
         AsyncHttpClient client = Dsl.asyncHttpClient();
-        CompletionStage<Long> whenResponse = client.prepareGet(r.getUrl()).execute()
+        return client.prepareGet(r.getUrl()).execute()
                 .toCompletableFuture()
                 .thenCompose(w -> CompletableFuture.completedFuture(
                         System.currentTimeMillis()-start
                 ));
-        return  whenResponse;
     }
     private HttpResponse convertIntoResponse(Result r){
         cashActor.tell(r,ActorRef.noSender());
-        HttpResponse res = HttpResponse
+        return HttpResponse
                 .create()
                 .withEntity(ContentTypes.APPLICATION_JSON, ByteString.fromString(r.getRequest().getUrl()+" "+r.getRequest().getCount()+
                         " "+r.getResult()+"\n"));
-        return  res;
     }
 }
