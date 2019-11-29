@@ -16,6 +16,6 @@ public class Request implements Comparable<Request> {
     }
     @Override
     public int compareTo(Request r){
-        return this.url.compareTo(r.getUrl());
+        return this.url.compareTo(r.getUrl())!=0 ? this.url.compareTo(r.getUrl()): Integer.compare(this.count, r.getCount());
     }
 }
