@@ -65,7 +65,7 @@ public class RouteActor {
     private HttpResponse convertIntoResponse(SaveResultMessage r){
         HttpResponse res = HttpResponse
                 .create()
-                .withEntity(ContentTypes.APPLICATION_JSON, ByteString.fromString(r.getRequest().toString()+" "+r.getResult()));
+                .withEntity(ContentTypes.APPLICATION_JSON, ByteString.fromString(r.getRequest().getUrl()+" "+r.getRequest().getCount()+" "+r.getResult()));
         return  res;
     }
 }
