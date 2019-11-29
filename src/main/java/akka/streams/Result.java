@@ -14,7 +14,6 @@ public class Result {
     }
 
     public Long getResult() {
-        System.out.println(result);
         return result;
     }
 }
