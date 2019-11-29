@@ -38,8 +38,11 @@ public class RouteActor {
         return new Request(url.get(),count.get());
     }
 
-    private CompletionStage<SaveResultMessage> sendRequest(Request r){
+    private CompletionStage<SaveResultMessage> checkRequest(Request r){
+        return Patternsa
+    }
 
+    private CompletionStage<SaveResultMessage> sendRequest(Request r){
         Sink<Request,CompletionStage<Long>> testSink =
                 Flow.<Request>create()
                 .mapConcat(t-> Collections.nCopies(t.getCount(),t))
