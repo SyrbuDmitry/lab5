@@ -1,6 +1,7 @@
 package akka.streams;
 
 import akka.actor.AbstractActor;
+import akka.actor.ActorRef;
 import akka.japi.pf.ReceiveBuilder;
 
 import java.util.HashMap;
@@ -12,11 +13,11 @@ public class StorageActor extends AbstractActor {
     @Override
     public Receive createReceive() {
         return ReceiveBuilder.create()
-                .match(SaveResultMessage.class, t->{
+                .match(Result.class, t->{
                     storage.put(t.getRequest(),t.getResult());
                 })
-                .match(GetResultMessage.class, msg->{
-
+                .match(Request.class, msg->{
+                    sender().tell(new Result(msg,storage.get(msg)), ActorRef.noSender());
                 })
                 .match(GetResultMessage.class, r-> sender())
                 .build();

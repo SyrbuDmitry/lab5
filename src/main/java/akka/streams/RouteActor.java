@@ -1,7 +1,11 @@
 package akka.streams;
 
 import akka.NotUsed;
+import akka.actor.ActorRef;
+import akka.actor.ActorSystem;
+import akka.actor.Props;
 import akka.http.javadsl.model.*;
+import akka.pattern.Patterns;
 import akka.stream.ActorMaterializer;
 import akka.stream.javadsl.Flow;
 import akka.stream.javadsl.Keep;
@@ -12,6 +16,8 @@ import org.asynchttpclient.Dsl;
 import org.asynchttpclient.AsyncHttpClient;
 import akka.http.javadsl.model.HttpRequest;
 import akka.http.javadsl.model.Query;
+
+import java.time.Duration;
 import java.util.Collections;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
@@ -19,13 +25,15 @@ import java.util.concurrent.CompletionStage;
 
 public class RouteActor {
     private ActorMaterializer materializer;
-    RouteActor(ActorMaterializer materializer){
+    private ActorRef cashActor;
+    RouteActor(ActorMaterializer materializer,ActorSystem system){
+        this.cashActor = system.actorOf(Props.create(StorageActor.class));
         this.materializer = materializer;
     }
     public Flow<HttpRequest,HttpResponse, NotUsed> createRoute(){
         return Flow.of(HttpRequest.class)
                 .map(this::parseQuery)
-                .mapAsync(5,this::sendRequest)
+                .mapAsync(5,this::checkRequest)
                 .map(this::convertIntoResponse);
     }
 
@@ -38,11 +46,13 @@ public class RouteActor {
         return new Request(url.get(),count.get());
     }
 
-    private CompletionStage<SaveResultMessage> checkRequest(Request r){
-        return Patternsa
+    private CompletionStage<Result> checkRequest(Request r){
+        return Patterns.ask(cashActor,r, Duration.ofSeconds(5))
+                .thenApply(res->(Result)res)
+                .thenCompose(m -> m.getResult()!=null ? CompletableFuture.completedFuture(m) : sendRequest(m.getRequest()));
     }
 
-    private CompletionStage<SaveResultMessage> sendRequest(Request r){
+    private CompletionStage<Result> sendRequest(Request r){
         Sink<Request,CompletionStage<Long>> testSink =
                 Flow.<Request>create()
                 .mapConcat(t-> Collections.nCopies(t.getCount(),t))
@@ -51,7 +61,7 @@ public class RouteActor {
         return Source.from(Collections.singletonList(r))
                 .toMat(testSink, Keep.right())
                 .run(materializer)
-                .thenApply(res->new SaveResultMessage(r,res/r.getCount()));
+                .thenApply(res->new Result(r,res/r.getCount()));
     }
 
 
@@ -65,7 +75,8 @@ public class RouteActor {
                 ));
         return  whenResponse;
     }
-    private HttpResponse convertIntoResponse(SaveResultMessage r){
+    private HttpResponse convertIntoResponse(Result r){
+        cashActor.tell(r,ActorRef.noSender());
         HttpResponse res = HttpResponse
                 .create()
                 .withEntity(ContentTypes.APPLICATION_JSON, ByteString.fromString(r.getRequest().getUrl()+" "+r.getRequest().getCount()+

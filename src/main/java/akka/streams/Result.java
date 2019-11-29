@@ -1,10 +1,10 @@
 package akka.streams;
 
-public class SaveResultMessage {
+public class Result {
     private Request request;
     private Long result;
 
-    SaveResultMessage(Request req, Long res){
+    Result(Request req, Long res){
         this.request=req;
         this.result=res;
     }
