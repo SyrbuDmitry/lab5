@@ -16,7 +16,7 @@ public class StorageActor extends AbstractActor {
                     storage.put(t.getRequest(),t.getResult());
                 })
                 .match(GetResultMessage.class, msg->{
-                    
+
                 })
                 .match(GetResultMessage.class, r-> sender())
                 .build();

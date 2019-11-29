@@ -38,7 +38,7 @@ public class RouteActor {
         return new Request(url.get(),count.get());
     }
 
-    private CompletionStage<Long> sendRequest(Request r){
+    private CompletionStage<SaveResultMessage> sendRequest(Request r){
 
         Sink<Request,CompletionStage<Long>> testSink =
                 Flow.<Request>create()
@@ -48,7 +48,7 @@ public class RouteActor {
         return Source.from(Collections.singletonList(r))
                 .toMat(testSink, Keep.right())
                 .run(materializer)
-                .thenApply(res->res/r.getCount());
+                .thenApply(res->new SaveResultMessage(r,res/r.getCount()));
     }
 
 
@@ -62,10 +62,10 @@ public class RouteActor {
                 ));
         return  whenResponse;
     }
-    private HttpResponse convertIntoResponse(Long r){
+    private HttpResponse convertIntoResponse(SaveResultMessage r){
         HttpResponse res = HttpResponse
                 .create()
-                .withEntity(ContentTypes.APPLICATION_JSON, ByteString.fromString(String.valueOf(r)));
+                .withEntity(ContentTypes.APPLICATION_JSON, ByteString.fromString(r.getRequest().toString()+" "+r.getResult()));
         return  res;
     }
 }
