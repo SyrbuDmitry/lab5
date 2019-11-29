@@ -19,8 +19,6 @@ public class StorageActor extends AbstractActor {
 
                 })
                 .match(Request.class, msg->{
-                    System.out.println("REQUEST");
-                    System.out.println(storage.get(msg));
                     sender().tell(new Result(msg,storage.get(msg)), ActorRef.noSender());
                 })
                 .match(GetResultMessage.class, r-> sender())
