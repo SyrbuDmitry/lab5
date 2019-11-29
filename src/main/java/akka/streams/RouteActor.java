@@ -58,6 +58,7 @@ public class RouteActor {
                 .mapConcat(t-> Collections.nCopies(t.getCount(),t))
                 .mapAsync(prlsm,this::getTime)
                 .toMat(Sink.fold(0L, (agg, next) -> agg + next),  Keep.right());
+
         return Source.from(Collections.singletonList(r))
                 .toMat(testSink, Keep.right())
                 .run(materializer)
