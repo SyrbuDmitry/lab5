@@ -47,7 +47,10 @@ public class RouteActor {
     private CompletionStage<Result> checkRequest(Request r){
         return Patterns.ask(cashActor,r, Duration.ofSeconds(5))
                 .thenApply(res->(Result)res)
-                .thenCompose(m -> m.getResult()!=null ? CompletableFuture.completedFuture(m) : sendRequest(m.getRequest()));
+                .thenCompose(m ->{
+                    System.out.println("Result: "+m.getResult()+" "+m.getRequest());
+                    return m.getResult()!=null ? CompletableFuture.completedFuture(m) : sendRequest(m.getRequest());
+                });
     }
 
     private CompletionStage<Result> sendRequest(Request r){
