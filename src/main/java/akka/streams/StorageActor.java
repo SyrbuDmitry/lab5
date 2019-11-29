@@ -6,9 +6,10 @@ import akka.japi.pf.ReceiveBuilder;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.TreeMap;
 
 public class StorageActor extends AbstractActor {
-    Map<Request,Long> storage = new HashMap<>();
+    Map<Request,Long> storage = new TreeMap<>();
 
     @Override
     public Receive createReceive() {
