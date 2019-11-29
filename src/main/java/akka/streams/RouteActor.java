@@ -48,7 +48,6 @@ public class RouteActor {
         return Patterns.ask(cashActor,r, Duration.ofSeconds(5))
                 .thenApply(res->(Result)res)
                 .thenCompose(m ->{
-                    System.out.println("Result: "+m.getResult()+" "+m.getRequest());
                     return m.getResult()!=null ? CompletableFuture.completedFuture(m) : sendRequest(m.getRequest());
                 });
     }
