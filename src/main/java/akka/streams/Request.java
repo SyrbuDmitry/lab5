@@ -1,6 +1,6 @@
 package akka.streams;
 
-public class Request {
+public class Request implements Comparable<Request> {
     private int count;
     private String url;
 
@@ -13,5 +13,9 @@ public class Request {
     }
     public String getUrl(){
         return url;
+    }
+    @Override
+    public int compareTo(Request r){
+        return this.url.compareTo(r.getUrl());
     }
 }
