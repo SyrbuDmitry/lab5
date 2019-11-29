@@ -1,9 +1,9 @@
 package akka.streams;
 
 import akka.NotUsed;
-import akka.actor.ActorRef;
+
 import akka.actor.ActorSystem;
-import akka.actor.Props;
+
 import akka.http.javadsl.ConnectHttp;
 import akka.http.javadsl.Http;
 import akka.http.javadsl.ServerBinding;
@@ -35,6 +35,7 @@ public class AkkaHttpTestApp extends AllDirectives {
                 ConnectHttp.toHost("localhost", 8080),
                 materializer
         );
+
         System.out.println("Server online at http://localhost:8085/\nPress RETURN to stop...");
         System.in.read();
         binding

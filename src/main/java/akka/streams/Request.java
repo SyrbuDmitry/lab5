@@ -5,7 +5,6 @@ public class Request {
     private String url;
 
     Request(String url, String count){
-        System.out.println("BUILDING REQUEST");
         this.url = url;
         this.count = Integer.parseInt(count);
     }
